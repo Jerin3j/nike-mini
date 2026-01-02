@@ -147,7 +147,7 @@ export default function ProductCard({ product }: { product: Product }) {
       onMouseLeave={handleLeave}
       className="relative w-full lg:w-[260px] h-[400px] bg-[#232323] rounded-lg overflow-hidden text-white"
     >
-      <div className="relative z-10 h-[250px] lg:h-[260px] overflow-hidden">
+      <div className="relative z-10 h-[200px] lg:h-[260px] overflow-hidden">
         <img
           ref={imageRef}
           src={activeColor.color_images[0]}
