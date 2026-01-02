@@ -60,7 +60,7 @@ export default function ProductCard({ product }: { product: Product }) {
         .to(
           productRef.current,
           {
-            y: -40,
+            y: -60,
             yPercent: -60,
             duration: 0.4,
             ease: "power3.out",

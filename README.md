@@ -15,7 +15,9 @@ A modern e-commerce frontend built with **Next.js (App Router)** showcasing prod
 
 ---
 
-## ✨ Features
+## ✨ Live Link
+
+https://nike-mini.vercel.app/
 
 ### 🧾 Product Listing
 - Fetches products dynamically from API
