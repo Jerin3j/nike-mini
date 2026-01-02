@@ -36,14 +36,13 @@ export default function MyOrdersPage() {
 
         const data = await res.json();
 
-        const extractedOrders =
-          Array.isArray(data)
-            ? data
-            : Array.isArray(data?.orders)
-            ? data.orders
-            : Array.isArray(data?.data?.orders)
-            ? data.data.orders
-            : [];
+        const extractedOrders = Array.isArray(data)
+          ? data
+          : Array.isArray(data?.orders)
+          ? data.orders
+          : Array.isArray(data?.data?.orders)
+          ? data.data.orders
+          : [];
 
         setOrders(extractedOrders);
       } catch (err: any) {
@@ -55,7 +54,6 @@ export default function MyOrdersPage() {
 
     fetchOrders();
   }, []);
-
 
   if (loading) {
     return (
@@ -73,11 +71,10 @@ export default function MyOrdersPage() {
     );
   }
 
-
   return (
-    <div className="min-h-screen bg-[#0e0e0e] text-white px-12 py-16">
+    <div className="min-h-screen bg-[#0e0e0e] text-white px-3 py-9 lg:px-12 lg:py-16">
       <div className="flex items-start gap-3 mb-10">
-        <h1 className="text-4xl font-semibold">My Orders</h1>
+        <h1 className="text-2xl lg:text-4xl font-semibold">My Orders</h1>
       </div>
 
       {/* ORDERS LIST */}
@@ -89,7 +86,7 @@ export default function MyOrdersPage() {
         {orders.map((order) => (
           <div
             key={order.order_id}
-            className="bg-[#1f1f1f] rounded-2xl px-6 py-4 flex items-center gap-5 w-[45rem]"
+            className="bg-[#1f1f1f] rounded-2xl px-3 lg:px-6 py-4 flex items-center gap-5 lg:w-[45rem]"
           >
             {/* IMAGE */}
             <div className="w-20 h-20 bg-[#171717] rounded-xl flex items-center justify-center overflow-hidden">
@@ -101,8 +98,10 @@ export default function MyOrdersPage() {
             </div>
 
             <div className="flex-1">
-              <p className="font-medium text-2xl">{order.product_name}</p>
-              <p className="text-lg text-gray-400 mt-1">
+              <p className="font-medium text-lg lg:text-2xl">
+                {order.product_name}
+              </p>
+              <p className="text-sm lg:text-lg text-gray-400 mt-1">
                 {order.order_id}
               </p>
               <p className="text-sm text-gray-500 mt-1">
@@ -116,7 +115,7 @@ export default function MyOrdersPage() {
               </p>
             </div>
 
-            <div className="text-right flex gap-3 items-center">
+            <div className="text-right flex flex-col lg:flex-row gap-3 items-center">
               <p className="font-semibold">₹{order.product_amount}</p>
               <p className="text-xs text-gray-500 line-through">
                 ₹{order.product_mrp}

@@ -145,11 +145,10 @@ export default function ProductCard({ product }: { product: Product }) {
     <div
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
-      className="relative w-[260px] h-[400px] bg-[#232323] rounded-lg overflow-hidden text-white"
+      className="relative w-full lg:w-[260px] h-[400px] bg-[#232323] rounded-lg overflow-hidden text-white"
     >
-
       {/* IMAGE (ALWAYS VISIBLE) */}
-      <div className="relative z-10 h-[240px] overflow-hidden">
+      <div className="relative z-10 h-[260px] overflow-hidden">
         <img
           ref={imageRef}
           src={activeColor.color_images[0]}
@@ -157,7 +156,10 @@ export default function ProductCard({ product }: { product: Product }) {
           className="w-full h-full object-cover object-top"
         />
       </div>
-      <h1 ref={productRef} className="text-2xl mt-10 font-bold text-center z-10">
+      <h1
+        ref={productRef}
+        className="text-2xl mt-10 font-bold text-center z-10"
+      >
         {product.name}
       </h1>
 
@@ -182,7 +184,7 @@ export default function ProductCard({ product }: { product: Product }) {
                ? "bg-black text-white"
                : "bg-white text-black"
            }`}
-                   >
+              >
                 {size.size_name}
               </button>
             ))}

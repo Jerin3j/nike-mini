@@ -12,9 +12,9 @@ const Navbar = () => {
 
   return (
     <nav className="bg-[#191919] flex justify-between items-center px-3 lg:px-12 py-2 lg:py-6 h-16">
-      <div>
+      <a href="/">
         <img src="/nike-logo.svg" alt="Logo" className="w-8 h-8" />
-      </div>
+      </a>
 
       <div className="flex items-center gap-6">
         {!user ? (

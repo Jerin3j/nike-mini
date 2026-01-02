@@ -2,8 +2,8 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-black px-6 py-[64px]">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
+    <footer className="w-full bg-black lg:px-6 px-3 py-5 lg:py-[64px]">
+      <div className="lg:max-w-7xl mx-auto flex items-center justify-between">
         
         <img
           src="/nike-logo.svg"

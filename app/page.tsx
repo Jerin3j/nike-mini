@@ -4,7 +4,7 @@ type Size = {
   size_id: number;
   size_name: string;
   price: number;
-    variation_product_id: number
+  variation_product_id: number;
 };
 
 type VariationColor = {
@@ -25,7 +25,7 @@ async function getProducts(): Promise<Product[]> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}api/new-products/`,
     {
-      cache: "no-store", // or { next: { revalidate: 60 } }
+      cache: "no-store", 
     }
   );
 
@@ -40,12 +40,12 @@ export default async function Home() {
   const products = await getProducts();
 
   return (
-    <div className="bg-[#161616] mx-10 px-18 py-14">
-      <h1 className="text-3xl text-white mb-6">
+    <div className="bg-[#161616] lg:mx-10 lg:px-18 px-8 py-5 lg:py-14">
+      <h1 className="text-2xl lg:text-3xl text-white mb-6 font-semibold">
         Men's Jordan Shoes
       </h1>
 
-      <div className="grid grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 ">
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}

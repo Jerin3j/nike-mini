@@ -24,31 +24,30 @@ export default function OrderSuccessPage() {
     : "";
 
   return (
-    <div className="min-h-screen bg-[#161616] text-white flex flex-col">
-      <main className="flex-1 flex flex-col items-center justify-center">
-       
-     <Image
+    <div className="h-screen min-h-screen bg-[#161616] text-white flex flex-col">
+      <main className="lg:flex-1 mt-20 lg:mt-0 flex flex-col items-center justify-center">
+        <Image
           src="/nike-logo.svg"
           alt="Nike"
           width={120}
           height={120}
-          className="mb"
+          className="w-24 h-24 lg:h-42 lg:w-42"
         />
-        <h1 className="text-3xl font-semibold mb-2">
+        <h1 className="text-2xl lg:text-3xl font-semibold mb-2">
           Successfully Ordered!
         </h1>
         <p className="text-gray-400 text-sm mb-10">{dateTime}</p>
 
         {/* PRODUCT CARD */}
-        <div className="bg-[#1f1f1f] rounded-lg px-6 py-4 flex items-center gap-5 w-[420px]">
+        <div className="bg-[#1f1f1f] rounded-lg px-3 lg:px-6 py-4 flex items-center gap-5 w-[355px] lg:w-[420px]">
           <div className="w-20 h-20 bg-[#1f1f1f] rounded-lg overflow-hidden flex items-center justify-center">
             {image && (
-                <div className="h-20">
-              <img
-                src={image}
-                alt={name || ""}
-                className="object-cover object-top scale-110"
-              />
+              <div className="h-20">
+                <img
+                  src={image}
+                  alt={name || ""}
+                  className="object-cover object-top scale-110"
+                />
               </div>
             )}
           </div>
