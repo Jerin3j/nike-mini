@@ -11,7 +11,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="bg-[#191919] flex justify-between items-center px-12 py-6 h-16">
+    <nav className="bg-[#191919] flex justify-between items-center px-3 lg:px-12 py-2 lg:py-6 h-16">
       <div>
         <img src="/nike-logo.svg" alt="Logo" className="w-8 h-8" />
       </div>
@@ -26,16 +26,16 @@ const Navbar = () => {
           </a>
         ) : (
           <div className="flex items-center gap-4">
-            <a href="/">
+            <a href="/my-orders">
               <img
                 src="/user-logo.svg"
                 alt="Profile"
-                className="w-8 h-8 rounded-full"
+                className="h-6 w-6 lg:w-8 lg:h-8 rounded-full"
               />
             </a>
             <a
               href="/logout"
-              className="text-white border border-white px-4 py-2 rounded hover:bg-white hover:text-black transition"
+              className="text-white border border-white px-2 lg:px-4 lg:py-2 rounded hover:bg-white hover:text-black transition"
             >
               Log Out
             </a>

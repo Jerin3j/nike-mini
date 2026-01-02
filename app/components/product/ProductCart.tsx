@@ -1,50 +1,50 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { useRouter } from "next/navigation";
 
-const variants = [
-  {
-    title: "NIKE SHOES",
-    color: "red",
-    image: "/shoe-red.png",
-    circle: "bg-[#9D333B]",
-    dot: "bg-[#9D333B]",
-  },
-  {
-    title: "NIKE SHOES",
-    color: "green",
-    image: "/shoe-green.png",
-    circle: "bg-[#9ADA2A]",
-    dot: "bg-[#9ADA2A]",
-  },
-  {
-    title: "NIKE SHOES",
-    color: "rose",
-    image: "/shoe-rose.png",
-    circle: "bg-[#840D91]",
-    dot: "bg-[#840D91]",
-  },
-  {
-    title: "DUNK 3.0",
-    color: "pink",
-    image: "/shoe-pink.png",
-    circle: "bg-[#DB8CAE]",
-    dot: "bg-[#DB8CAE]",
-  },
-];
+type Size = {
+  size_id: number;
+  size_name: string;
+  price: number;
+  variation_product_id: number;
+};
 
-export default function ProductCard() {
-  const [active, setActive] = useState(variants[0]);
+type VariationColor = {
+  color_id: number;
+  color_name: string;
+  color_images: string[];
+  sizes: Size[];
+};
 
-  const cardRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLDivElement>(null);
-  const circleRef = useRef<HTMLDivElement>(null);
-  const nikeRef = useRef<HTMLDivElement>(null);
-  const shoeRef = useRef<HTMLImageElement>(null);
+type Product = {
+  id: string;
+  name: string;
+  product_images: { product_image: string }[];
+  variation_colors: VariationColor[];
+};
+
+export default function ProductCard({ product }: { product: Product }) {
+  const router = useRouter();
+  const [activeColor, setActiveColor] = useState<VariationColor | null>(null);
+  const [activeSize, setActiveSize] = useState<Size | null>(null);
+
+  useEffect(() => {
+    if (product.variation_colors?.length) {
+      setActiveColor(product.variation_colors[0]);
+    }
+  }, [product]);
+
+  useEffect(() => {
+    if (activeColor?.sizes?.length) {
+      setActiveSize(activeColor.sizes[0]);
+    }
+  }, [activeColor]);
+
+  const imageRef = useRef<HTMLImageElement>(null);
+  const productRef = useRef<HTMLImageElement>(null);
   const detailsRef = useRef<HTMLDivElement>(null);
-
   const tl = useRef<gsap.core.Timeline | null>(null);
 
   const handleEnter = () => {
@@ -52,58 +52,31 @@ export default function ProductCard() {
       tl.current = gsap.timeline({ paused: true });
 
       tl.current
-        .to(contentRef.current, {
-          y: -50,
-          duration: 0.6,
+        .to(imageRef.current, {
+          y: -40,
+          duration: 0.4,
           ease: "power3.out",
         })
         .to(
-          circleRef.current,
+          productRef.current,
           {
-            x: 45,
-            y: -20,
-            rotate: 45,
-            duration: 0.6,
-            ease: "power3.out",
-          },
-          "<"
-        )
-        .to(
-          nikeRef.current,
-          {
-            y: -50,
-            duration: 0.6,
-            ease: "power3.out",
-          },
-          "<"
-        )
-        .to(
-          shoeRef.current,
-          {
-            y: -8,
+            y: -40,
+            yPercent: -60,
             duration: 0.4,
-            ease: "power2.out",
+            ease: "power3.out",
           },
           "<"
         )
-        .to(
-          titleRef.current,
-          {
-            y: -49,
-            duration: 0.6,
-            ease: "power2.out",
-          },
-          "<"
-        )
-        .to(
+        .fromTo(
           detailsRef.current,
+          { y: 90, opacity: 0 },
           {
+            y: 0,
             opacity: 1,
-            y: -55,
             duration: 0.4,
-            ease: "power2.out",
+            ease: "power3.out",
           },
-          "-=0.2"
+          "<"
         );
     }
 
@@ -114,86 +87,144 @@ export default function ProductCard() {
     tl.current?.reverse();
   };
 
+  if (!activeColor) return null;
+
+  // product buy
+
+  const handleBuyNow = async () => {
+    try {
+      const token = localStorage.getItem("access_token");
+      if (!token) {
+        alert("Please login first");
+        return;
+      }
+
+      if (!activeSize) {
+        alert("Please select a size");
+        return;
+      }
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}api/purchase-product/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            variation_product_id: activeSize.variation_product_id,
+          }),
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data?.message || "Purchase failed");
+      }
+
+      const orderedAt = new Date().toISOString();
+
+      router.push(
+        `/order-success?` +
+          `orderId=${data.order.id}` +
+          `&name=${encodeURIComponent(product.name)}` +
+          `&image=${encodeURIComponent(activeColor.color_images[0])}` +
+          `&size=${activeSize.size_name}` +
+          `&amount=${data.order.total_amount}` +
+          `&orderedAt=${orderedAt}`
+      );
+    } catch (err: any) {
+      console.error(err);
+      alert(err.message || "Something went wrong");
+    }
+  };
+
   return (
     <div
-      ref={cardRef}
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
-      className="relative w-[260px] h-[400px] bg-[#1f1f1f] overflow-hidden text-white cursor-pointer"
+      className="relative w-[260px] h-[400px] bg-[#232323] rounded-lg overflow-hidden text-white"
     >
-      {/* BACKGROUND TEXT */}
-      <h1
-        ref={nikeRef}
-        className="absolute inset-0 flex items-center justify-center text-[120px] font-black text-white/5 pointer-events-none"
-      >
-        NIKE
+
+      {/* IMAGE (ALWAYS VISIBLE) */}
+      <div className="relative z-10 h-[240px] overflow-hidden">
+        <img
+          ref={imageRef}
+          src={activeColor.color_images[0]}
+          alt={product.name}
+          className="w-full h-full object-cover object-top"
+        />
+      </div>
+      <h1 ref={productRef} className="text-2xl mt-10 font-bold text-center z-10">
+        {product.name}
       </h1>
 
-      {/* CONTENT */}
-      <div ref={contentRef} className="relative h-full px-5 pt-6">
-        {/* COLOR CIRCLE */}
-        <div
-          ref={circleRef}
-          className={`absolute -top-24 -right-24 w-[368px] h-[305px]  rounded-full transition-colors duration-500 ${active?.circle}`}
-        />
-
-        {/* SHOE */}
-        <img
-          ref={shoeRef}
-          src={active.image}
-          alt="Nike Shoe"
-          className="relative z-10 w-full -rotate-30"
-        />
-
-        {/* TITLE */}
-        <h2 ref={titleRef} className="relative z-10 mt-4 text-center text-lg font-semibold">
-          {active.title}
-        </h2>
-
-        {/* DETAILS */}
-        <div
-          ref={detailsRef}
-          className="mt-4 text-center opacity-0 translate-y-6 flex flex-col gap-2"
-        >
-          {/* SIZE */}
-          <div className="flex items-center gap-5">
-            <p className="text-xs text-gray-400 mb-1">SIZE:</p>
-            <div className="flex justify-center gap-2">
-              {["7", "8", "9", "10"].map((size) => (
-                <span
-                  key={size}
-                  className="w-6 h-6 flex items-center justify-center rounded bg-white text-black text-sm font-semibold"
-                >
-                  {size}
-                </span>
-              ))}
-            </div>
+      <div
+        ref={detailsRef}
+        className="absolute bottom-0 left-0 w-full px-5 pb-5 z-20 opacity-0"
+      >
+        {/* SIZE */}
+        <div className="flex items-center gap-4 mb-3">
+          <p className="text-xs text-gray-400">SIZE:</p>
+          <div className="flex gap-2">
+            {activeColor.sizes.map((size) => (
+              <button
+                key={size.size_id}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setActiveSize(size);
+                }}
+                className={`w-6 h-6 rounded text-xs font-semibold
+           ${
+             activeSize?.size_id === size.size_id
+               ? "bg-black text-white"
+               : "bg-white text-black"
+           }`}
+                   >
+                {size.size_name}
+              </button>
+            ))}
           </div>
-
-          {/* COLOR */}
-          <div className="mt-3 flex items-center gap-5">
-            <p className="text-xs text-gray-400 mb-1">COLOR:</p>
-            <div className="flex justify-center gap-3">
-              {variants.map((v) => (
-                <button
-                  key={v.color}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setActive(v);
-                  }}
-                  className={`w-4 h-4 rounded-full ${v.dot} ring-2 ${
-                    active.color === v.color ? "ring-white" : "ring-transparent"
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* BUTTON */}
-          <button className="mt-4 bg-white text-black px-6 py-2 rounded-lg font-semibold">
-            Buy Now
-          </button>
         </div>
+
+        {/* COLOR */}
+        <div className="flex items-center gap-4 mb-4">
+          <p className="text-xs text-gray-400">COLOR:</p>
+          <div className="flex gap-3">
+            {product.variation_colors.map((color) => (
+              <button
+                key={color.color_id}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setActiveColor(color);
+                }}
+                className={`w-4 h-4 rounded-full ring-2 ${
+                  activeColor.color_id === color.color_id
+                    ? "ring-white"
+                    : "ring-transparent"
+                }`}
+                style={{
+                  backgroundColor:
+                    color.color_name === "Black"
+                      ? "#111"
+                      : color.color_name === "White"
+                      ? "#e5e5e5"
+                      : "#ef4444",
+                }}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* BUY BUTTON */}
+        <button
+          onClick={handleBuyNow}
+          className="w-full bg-white text-black py-2 rounded-lg font-semibold cursor-pointer"
+        >
+          Buy Now
+        </button>
       </div>
     </div>
   );
