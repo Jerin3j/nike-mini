@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🛍️ Nike Shoes – E-Commerce Frontend (Next.js)
 
-## Getting Started
+A modern e-commerce frontend built with **Next.js (App Router)** showcasing product listing, product variations, order placement, order success flow, and user orders — integrated with backend APIs.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Tech Stack
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Next.js 14 (App Router)**
+- **TypeScript**
+- **Tailwind CSS**
+- **GSAP** – hover animations
+- **JWT Authentication**
+- **REST APIs**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## ✨ Features
 
-## Learn More
+### 🧾 Product Listing
+- Fetches products dynamically from API
+- Displays product image, name, colors, and sizes
+- Smooth hover animation using GSAP
+- Color switching updates product image
+- Clean, minimal UI based on Figma design
 
-To learn more about Next.js, take a look at the following resources:
+### 🛒 Purchase Product
+- Buy product using **variation_product_id**
+- JWT-protected API request
+- On successful purchase:
+  - Redirects to **Order Success** page
+  - Displays order ID, product name, cropped image, price, and order time
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### ✅ Order Success Page
+- Receives order details via URL search params
+- Displays confirmation UI as per Figma
+- Shows:
+  - Product image
+  - Product name
+  - Order ID
+  - Amount paid
+  - Order date & time
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 📦 My Orders Page
+- Fetches user orders from API
+- JWT protected
+- Displays:
+  - Product name (includes color & size as per backend response)
+  - Order ID
+  - Order date
+  - Paid amount
+- Uses static placeholder image (backend does not provide image)
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🔐 Authentication
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- JWT token is stored in `localStorage`
+- Required for:
+  - Purchasing product
+  - Fetching user orders
+
+---
+
+## 🔗 API Endpoints Used
+
+### Get Products
