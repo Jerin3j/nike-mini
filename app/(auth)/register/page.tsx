@@ -142,7 +142,7 @@ const Page = () => {
         <img
           src="/login-image.png"
           alt="Login visual"
-          className="w-[720px] h-[870px]"
+          className="w-[720px] h-[870px] hidden md:block"
         />
 
         <div className="w-full max-w-xl space-y-6">

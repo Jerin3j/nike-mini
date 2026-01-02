@@ -147,8 +147,7 @@ export default function ProductCard({ product }: { product: Product }) {
       onMouseLeave={handleLeave}
       className="relative w-full lg:w-[260px] h-[400px] bg-[#232323] rounded-lg overflow-hidden text-white"
     >
-      {/* IMAGE (ALWAYS VISIBLE) */}
-      <div className="relative z-10 h-[260px] overflow-hidden">
+      <div className="relative z-10 h-[250px] lg:h-[260px] overflow-hidden">
         <img
           ref={imageRef}
           src={activeColor.color_images[0]}
@@ -158,7 +157,7 @@ export default function ProductCard({ product }: { product: Product }) {
       </div>
       <h1
         ref={productRef}
-        className="text-2xl mt-10 font-bold text-center z-10"
+        className="text-2xl mt-12 lg:mt-10 font-bold text-center z-10"
       >
         {product.name}
       </h1>
@@ -167,7 +166,6 @@ export default function ProductCard({ product }: { product: Product }) {
         ref={detailsRef}
         className="absolute bottom-0 left-0 w-full px-5 pb-5 z-20 opacity-0"
       >
-        {/* SIZE */}
         <div className="flex items-center gap-4 mb-3">
           <p className="text-xs text-gray-400">SIZE:</p>
           <div className="flex gap-2">
@@ -191,7 +189,6 @@ export default function ProductCard({ product }: { product: Product }) {
           </div>
         </div>
 
-        {/* COLOR */}
         <div className="flex items-center gap-4 mb-4">
           <p className="text-xs text-gray-400">COLOR:</p>
           <div className="flex gap-3">
@@ -220,7 +217,6 @@ export default function ProductCard({ product }: { product: Product }) {
           </div>
         </div>
 
-        {/* BUY BUTTON */}
         <button
           onClick={handleBuyNow}
           className="w-full bg-white text-black py-2 rounded-lg font-semibold cursor-pointer"
